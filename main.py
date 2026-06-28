@@ -21,15 +21,40 @@ def check_game_status(board: chess.Board):
 def player_move(board: chess.Board):
     print(board)
     i = 1
+    out = []
     for move in board.legal_moves:
-        print(i, move)
+        out.append(f"{i}:{move}")
         i+=1
+    print("Legal moves:")
+    print(" ".join(out))
     
-    idx = int(input("Your move (index):"))
-    idx-=1
-    
-    move = list(board.legal_moves)[idx]
-    board.push(move)
+    val = input("Your move (index/string):").strip()
+
+    try:
+        val = int(val)
+
+        if val > len(list(board.legal_moves)) or val < 1:
+            print("Error")
+            player_move(board)
+            return
+
+        val-=1
+        move = list(board.legal_moves)[val]
+        board.push(move)
+    except ValueError:
+        try:
+            move = chess.Move.from_uci(str(val))
+            if move in board.legal_moves:
+                board.push(move)
+            else:
+                print("Error")
+                player_move(board)
+                return
+        except chess.InvalidMoveError:
+            print("Error")
+            player_move(board)
+            return
+
 
 def engine_move(board: chess.Board, is_white: bool):
     print(board)

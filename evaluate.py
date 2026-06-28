@@ -1,6 +1,6 @@
 import chess
 
-#TODO pawn bonus, king bonus
+#TODO pawn bonus, king bonus, rename eval
 
 PIECE_VALUES = {
     chess.PAWN: 100,
@@ -23,5 +23,5 @@ def eval(board: chess.Board):
     for p_type, p_val in PIECE_VALUES.items():
         white = board.pieces(p_type, chess.WHITE)
         black = board.pieces(p_type, chess.BLACK)
-        score += p_val*(len(white)-len(black))/2
+        score += p_val*(len(white)-len(black))
     return score
