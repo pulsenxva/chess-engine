@@ -1,6 +1,6 @@
 import chess
 
-#TODO king bonus
+#TODO king bonus, piece tables
 
 PIECE_VALUES = {
   chess.PAWN: 100,
@@ -41,15 +41,15 @@ def doubled_pawns(board: chess.Board):
 def mobility_bonus(board: chess.Board):
   score = 0;
   if board.turn == chess.WHITE:
-    score += len(list(board.legal_moves)) * 5
+    score += len(list(board.legal_moves)) * 1
     cpy = board.copy()
     cpy.turn = chess.BLACK
-    score -= len(list(cpy.legal_moves)) * 5
+    score -= len(list(cpy.legal_moves)) * 1
   else:
-    score -= len(list(board.legal_moves)) * 5
+    score -= len(list(board.legal_moves)) * 1
     cpy = board.copy()
     cpy.turn = chess.WHITE
-    score += len(list(cpy.legal_moves)) * 5
+    score += len(list(cpy.legal_moves)) * 1
   return score
 
 def pawn_bonus(board: chess.Board):

@@ -1,2 +1,3 @@
 .chess_env
-pycache/
+__pycache__/
+thoughts.txt
