@@ -54,7 +54,7 @@ def mobility_bonus(board: chess.Board):
 
 def pawn_bonus(board: chess.Board):
   white_vals = [
-    [0, 50, 50, 50, 50, 50, 50, 50],
+    [50, 50, 50, 50, 50, 50, 50, 50],
     [40, 40, 40, 40, 40, 40, 40, 40],
     [30, 30, 30, 30, 30, 30, 30, 30],
     [20, 20, 20, 20, 20, 20, 20, 20],
@@ -77,6 +77,17 @@ def pawn_bonus(board: chess.Board):
 
   return score
 
+def castling_bonus(board: chess.Board):
+  score = 0
+  w_king = board.king(chess.WHITE)
+  b_king = board.king(chess.BLACK)
+
+  if w_king == chess.G1 or w_king == chess.C1:
+    score += 50
+  if b_king == chess.G8 or b_king == chess.C8:
+    score -= 50
+  return score
+
 def evaluate(board: chess.Board):
   if(board.is_checkmate()):
     if(board.turn == chess.WHITE): return -100000
@@ -90,5 +101,6 @@ def evaluate(board: chess.Board):
   score += doubled_pawns(board)
   score += mobility_bonus(board)
   score += pawn_bonus(board)
+  score += castling_bonus(board)
 
   return score

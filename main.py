@@ -1,23 +1,29 @@
 import chess
 from engine import minimax
+from evaluate import evaluate
 
 #TODO improve board
 
-def check_game_status(board: chess.Board):
+def check_game_status(board: chess.Board, game):
   if board.is_checkmate():
     print(board)
+
     if(board.turn == chess.WHITE):
       print("Black won")
     else:
       print("White won")
+
+    print(game)
     return True
   elif(board.is_stalemate()):
     print(board)
     print("Stalemate")
+    print(game)
     return True
   elif(board.is_insufficient_material()):
     print(board)
     print("Insufficient material")
+    print(game)
     return True
   return False
 
@@ -46,6 +52,7 @@ def player_move(board: chess.Board, game):
     move = list(board.legal_moves)[val]
     board.push(move)
     game.append(move)
+    print(evaluate(board))
     return True
   except ValueError:
     try:
@@ -53,6 +60,7 @@ def player_move(board: chess.Board, game):
       if move in board.legal_moves:
         board.push(move)
         game.append(move)
+        print(evaluate(board))
         return True
       else:
         print("Error")
@@ -61,9 +69,9 @@ def player_move(board: chess.Board, game):
       print("Error")
       return player_move(board, game)
 
-def engine_move(board: chess.Board, is_white: bool, game):
+def engine_move(board: chess.Board, game):
   print(board)
-  bestMove, bestScore = minimax(board, 0, is_white)
+  bestMove, bestScore = minimax(board, 0, -1000000, 1000000)
   print("Engine's move: ", bestMove, bestScore)
   if(bestMove == None):
     print("helloworld im stupid(")
@@ -73,24 +81,21 @@ def engine_move(board: chess.Board, is_white: bool, game):
     game.append(bestMove)
 
 def main():
-  board = chess.Board();
+  board = chess.Board()
   game = []
-  white_move = True
 
   while 1:
     continues = player_move(board, game)
     if not continues:
       print(game)
       return
-    white_move = not white_move
 
-    state = check_game_status(board)
+    state = check_game_status(board, game)
     if state == True: return
     
-    engine_move(board, white_move, game)
-    white_move = not white_move
+    engine_move(board, game)
 
-    state = check_game_status(board)
+    state = check_game_status(board, game)
     if state == True: return
 
 if __name__=="__main__":
