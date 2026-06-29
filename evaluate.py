@@ -1,6 +1,6 @@
 import chess
 
-#TODO king bonus, piece tables
+#TODO more king safety
 
 PIECE_VALUES = {
   chess.PAWN: 100,
@@ -8,7 +8,6 @@ PIECE_VALUES = {
   chess.BISHOP: 330,
   chess.ROOK: 500,
   chess.QUEEN: 900,
-  chess.KING: 100000,
 }
 
 def material_bonus(board: chess.Board):
@@ -116,10 +115,10 @@ def knight_bonus(board: chess.Board):
   vals = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [-10, 0, 0, 0, 0, 0, 0, -10],
+    [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 10, 0, 15, 15, 0, 10, 0],
     [0, 0, 7, 7, 7, 7, 0, 0],
-    [-10, 0, 10, 0, 0, 10, 0, -10],
+    [0, 0, 10, 0, 0, 10, 0, 0],
     [0, 0, 0, 5, 5, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]
@@ -192,7 +191,7 @@ def evaluate(board: chess.Board):
   score = 0
   score += material_bonus(board)
   score += doubled_pawns(board)
-  score += mobility_bonus(board)
+  #score += mobility_bonus(board)
   score += pawn_bonus(board)
   score += castling_bonus(board)
   score += knight_bonus(board)
