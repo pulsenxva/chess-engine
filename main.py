@@ -1,6 +1,7 @@
 import chess
 from engine import minimax
 from evaluate import evaluate
+from evaluate import get_bonuses
 
 #TODO improve board
 
@@ -26,6 +27,11 @@ def check_game_status(board: chess.Board, game):
     print(game)
     return True
   return False
+
+def print_evaluation(board: chess.Board):
+  bonuses = get_bonuses(board)
+  print(bonuses)
+  print(evaluate(board))
 
 def player_move(board: chess.Board, game):
   print(board)
@@ -79,13 +85,16 @@ def engine_move(board: chess.Board, game):
   else:
     board.push(bestMove)
     game.append(bestMove)
+    print_evaluation(board)
 
 def main():
   board = chess.Board()
+  print_evaluation(board)
   game = []
 
   while 1:
     continues = player_move(board, game)
+    print_evaluation(board)
     if not continues:
       print(game)
       return
