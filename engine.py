@@ -37,7 +37,7 @@ def minimax(board: chess.Board, depth: int, alpha: int, beta: int):
     mnScore = 1000000
     bestMove = None
 
-    for move in board.legal_moves:
+    for move in ordered_moves(board):
       board.push(move)
       nmove, nscore = minimax(board, depth+1, alpha, beta)
       board.pop()

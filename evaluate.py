@@ -67,12 +67,14 @@ def pawn_bonus(board: chess.Board):
   for square in board.pieces(chess.PAWN, chess.WHITE):
     rank = 7-chess.square_rank(square)
     file = chess.square_file(square)
-    score += white_vals[rank][file]
+    if board.fullmove_number < 40: score += white_vals[rank][file]
+    else: score += 2*white_vals[rank][file]
 
   for square in board.pieces(chess.PAWN, chess.BLACK):
     rank = chess.square_rank(square)
     file = chess.square_file(square)
-    score -= white_vals[rank][file]
+    if board.fullmove_number < 40: score -= white_vals[rank][file]
+    else: score -= 2*white_vals[rank][file]
 
   return score
 
@@ -171,7 +173,7 @@ def get_bonuses(board: chess.Board):
   bonuses = []
   bonuses.append(material_bonus(board))
   bonuses.append(doubled_pawns(board))
-  bonuses.append(mobility_bonus(board))
+  #bonuses.append(mobility_bonus(board))
   bonuses.append(pawn_bonus(board))
   bonuses.append(castling_bonus(board))
   bonuses.append(knight_bonus(board))
@@ -186,12 +188,12 @@ def evaluate(board: chess.Board):
 
   if(board.is_stalemate()): return 0
   if(board.is_insufficient_material()): return 0
-
+  if board.is_repetition(2): return 0
   
   score = 0
   score += material_bonus(board)
   score += doubled_pawns(board)
-  #score += mobility_bonus(board)
+  score += mobility_bonus(board)
   score += pawn_bonus(board)
   score += castling_bonus(board)
   score += knight_bonus(board)
