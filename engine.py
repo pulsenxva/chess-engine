@@ -1,7 +1,6 @@
 import chess
 from evaluate import evaluate
 
-#transposotion_table = {}
 
 def ordered_moves(board: chess.Board):
   moves = list(board.legal_moves)
@@ -56,10 +55,6 @@ def quiesce(board: chess.Board, alpha: int, beta: int, depth: int):
 def minimax(board: chess.Board, depth: int, alpha: int, beta: int):
   if depth == 4 or board.is_game_over(): return None, quiesce(board, alpha, beta, 0)
 
-  #key = board.fen, depth
-  #if key in transposotion_table:
-  #  return transposotion_table[key]
-
   if board.turn == chess.WHITE:
     mxScore = -1000000
     bestMove = None
@@ -73,12 +68,10 @@ def minimax(board: chess.Board, depth: int, alpha: int, beta: int):
         mxScore = nscore
         bestMove = move
 
-        # can prune this 
       if mxScore >= beta:
         break
       alpha = max(alpha, mxScore)
 
-    #transposotion_table[key] = bestMove, mxScore
     return bestMove, mxScore
   else:
     mnScore = 1000000
@@ -97,5 +90,4 @@ def minimax(board: chess.Board, depth: int, alpha: int, beta: int):
         break
       beta = min(beta, mnScore)
 
-    #transposotion_table[key] = bestMove, mnScore
     return bestMove, mnScore

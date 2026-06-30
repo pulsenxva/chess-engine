@@ -1,7 +1,5 @@
 import chess
 
-#TODO more king safety
-
 PIECE_VALUES = {
   chess.PAWN: 100,
   chess.KNIGHT: 320,
@@ -184,7 +182,7 @@ def evaluate(board: chess.Board):
 
   if(board.is_stalemate()): return 0
   if(board.is_insufficient_material()): return 0
-  if board.is_repetition(2): return 0
+  if board.is_repetition(3): return 0
   
   score = 0
   score += material_bonus(board)

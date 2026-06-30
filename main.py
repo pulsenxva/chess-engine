@@ -3,8 +3,6 @@ from engine import minimax
 from evaluate import evaluate
 from evaluate import get_bonuses
 
-#TODO improve board
-
 def check_game_status(board: chess.Board, game):
   if board.is_checkmate():
     print(board)
@@ -38,13 +36,13 @@ def player_move(board: chess.Board, game):
   i = 1
   out = []
   for move in board.legal_moves:
-    out.append(f"{i}:{move}")
+    out.append(f"{i}.{move}")
     i+=1
   print("Legal moves:")
   print(" ".join(out))
   
-  val = input("Your move (index/string):").strip()
-  if val == "exit":
+  val = input("Your move (index/uci format string):").strip()
+  if val == "stop":
     return False
 
   try:
@@ -78,23 +76,22 @@ def player_move(board: chess.Board, game):
 def engine_move(board: chess.Board, game):
   print(board)
   bestMove, bestScore = minimax(board, 0, -1000000, 1000000)
-  print("Engine's move: ", bestMove, bestScore)
+  print("Engine's move:", bestMove, "score:", bestScore)
   if(bestMove == None):
-    print("helloworld im stupid(")
+    print("it shouldnt happen")
     board.push(list(board.legal_moves)[0])
   else:
     board.push(bestMove)
     game.append(bestMove)
-    print_evaluation(board)
+    #print_evaluation(board)
 
 def main():
   board = chess.Board()
-  print_evaluation(board)
   game = []
 
   while 1:
     continues = player_move(board, game)
-    print_evaluation(board)
+    #print_evaluation(board)
     if not continues:
       print(game)
       return
