@@ -38,17 +38,13 @@ def doubled_pawns(board: chess.Board):
   return score
 
 def mobility_bonus(board: chess.Board):
+  mobility_pieces = [chess.KNIGHT, chess.BISHOP, chess.ROOK]
   score = 0
-  if board.turn == chess.WHITE:
-    score += len(list(board.legal_moves)) * 1
-    cpy = board.copy()
-    cpy.turn = chess.BLACK
-    score -= len(list(cpy.legal_moves)) * 1
-  else:
-    score -= len(list(board.legal_moves)) * 1
-    cpy = board.copy()
-    cpy.turn = chess.WHITE
-    score += len(list(cpy.legal_moves)) * 1
+  for p_type in mobility_pieces:
+    for square in board.pieces(p_type, chess.WHITE):
+      score += len(list(board.attacks(square)))*2
+    for square in board.pieces(p_type, chess.BLACK):
+      score -= len(list(board.attacks(square)))*2
   return score
 
 def pawn_bonus(board: chess.Board):
@@ -147,9 +143,9 @@ def bishop_bonus(board: chess.Board):
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 15, 0, 0, 0, 0, 15, 0],
-    [0, 0, 10, 0, 0, 10, 0, 0],
+    [0, 0, 15, 0, 0, 15, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 10, 0, 0, 0, 0, 10, 0],
+    [0, 15, 0, 0, 0, 0, 15, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ]
 
@@ -173,7 +169,7 @@ def get_bonuses(board: chess.Board):
   bonuses = []
   bonuses.append(material_bonus(board))
   bonuses.append(doubled_pawns(board))
-  #bonuses.append(mobility_bonus(board))
+  bonuses.append(mobility_bonus(board))
   bonuses.append(pawn_bonus(board))
   bonuses.append(castling_bonus(board))
   bonuses.append(knight_bonus(board))
