@@ -6,5 +6,5 @@ I used the minimax algorithm with alpha-beta pruning and quiescence search. The 
 ## Usage
 ```markdown
 pip install chess flask
-./server.py # runs webserver on localhost:5000
+python server.py # runs webserver on localhost:5000
 ```
